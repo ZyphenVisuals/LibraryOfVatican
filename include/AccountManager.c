@@ -6,6 +6,17 @@
 
 #include "LogUtils.h"
 
+char *get_filepath(char *surname, char *name, char *datapath)
+{
+    char *prefix = "accounts/";
+    char *filepath = malloc(strlen(surname) + strlen(name) + strlen(prefix) + strlen(datapath));
+    strcpy(filepath, datapath);
+    strcat(filepath, prefix);
+    strcat(filepath, surname);
+    strcat(filepath, name);
+    return filepath;
+}
+
 char *read_password(char *prompt)
 {
     // TODO: don't use getpass, it's deprecated
@@ -34,9 +45,18 @@ char *hash_password(char *pass)
     return hashed_pass;
 }
 
-char create_account(char *surname, char *name)
+char create_account(char *surname, char *name, char *datapath)
 {
-    // read password without echoing
+    // check if account already exists
+    char *filepath = get_filepath(surname, name, datapath);
+    puts(filepath);
+    if (fopen(filepath, "r") != NULL)
+    {
+        print_error("Account already exists.");
+        free(filepath);
+        return 1;
+    }
+
     char *pass = read_password("Password: ");
     char *confirm_pass = read_password("Confirm password: ");
 
