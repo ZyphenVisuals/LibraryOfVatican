@@ -2,5 +2,6 @@
 #define ACCOUNT_MANAGER_HEADER
 
 char create_account(char *surname, char *name, char *datapath);
+char login(char *surname, char *name, char *datapath);
 
 #endif

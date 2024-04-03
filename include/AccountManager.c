@@ -81,3 +81,37 @@ char create_account(char *surname, char *name, char *datapath)
 
     return 0;
 }
+
+char login(char *surname, char *name, char *datapath)
+{
+    // open account file
+    char *filepath = get_filepath(surname, name, datapath);
+    FILE *account_file = fopen(filepath, "r");
+    free(filepath);
+
+    // check that account exists
+    if (account_file == NULL)
+    {
+        print_error("Account does not exist.");
+        return 1;
+    }
+
+    // read hash from file
+    char *target_hash = malloc(SHA256_DIGEST_LENGTH * 2 + 1);
+    fgets(target_hash, SHA256_DIGEST_LENGTH * 2, account_file);
+
+    // read password from usr
+    char *pass = read_password("Password: ");
+
+    // hash password
+    char *pass_hash = hash_password(pass);
+    free(pass);
+
+    if (strcmp(pass_hash, target_hash) != 0)
+    {
+        print_error("Wrong password.");
+        return 1;
+    }
+
+    return 0;
+}
