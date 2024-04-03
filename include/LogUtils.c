@@ -15,10 +15,11 @@ void print_info(const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    char *formatted = malloc(strlen(fmt) + 19);
+    char *formatted = malloc(strlen(fmt) + 20);
     strcpy(formatted, ANSI_COLOR_CYAN);
     strcat(formatted, "[INFO] ");
     strcat(formatted, fmt);
+    strcat(formatted, "\n");
     strcat(formatted, ANSI_COLOR_RESET);
     vprintf(formatted, args);
     va_end(args);
@@ -28,10 +29,11 @@ void print_error(const char *fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    char *formatted = malloc(strlen(fmt) + 20);
+    char *formatted = malloc(strlen(fmt) + 21);
     strcpy(formatted, ANSI_COLOR_RED);
     strcat(formatted, "[ERROR] ");
     strcat(formatted, fmt);
+    strcat(formatted, "\n");
     strcat(formatted, ANSI_COLOR_RESET);
     vprintf(formatted, args);
     va_end(args);
