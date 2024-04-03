@@ -49,7 +49,6 @@ char create_account(char *surname, char *name, char *datapath)
 {
     // check if account already exists
     char *filepath = get_filepath(surname, name, datapath);
-    puts(filepath);
     if (fopen(filepath, "r") != NULL)
     {
         print_error("Account already exists.");
@@ -57,6 +56,7 @@ char create_account(char *surname, char *name, char *datapath)
         return 1;
     }
 
+    // read and confirm password
     char *pass = read_password("Password: ");
     char *confirm_pass = read_password("Confirm password: ");
 
@@ -69,8 +69,15 @@ char create_account(char *surname, char *name, char *datapath)
     }
     free(confirm_pass);
 
+    // hash password
     char *hashed_pass = hash_password(pass);
     free(pass);
+
+    // store data
+    FILE *account_file = fopen(filepath, "w");
+    fprintf(account_file, "%s", hashed_pass);
+    fclose(account_file);
+    free(hashed_pass);
 
     return 0;
 }

@@ -16,8 +16,22 @@ void print_info(const char *fmt, ...)
     va_list args;
     va_start(args, fmt);
     char *formatted = malloc(strlen(fmt) + 20);
-    strcpy(formatted, ANSI_COLOR_CYAN);
+    strcpy(formatted, ANSI_COLOR_GREEN);
     strcat(formatted, "[INFO] ");
+    strcat(formatted, fmt);
+    strcat(formatted, "\n");
+    strcat(formatted, ANSI_COLOR_RESET);
+    vprintf(formatted, args);
+    va_end(args);
+}
+
+void print_debug(const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    char *formatted = malloc(strlen(fmt) + 21);
+    strcpy(formatted, ANSI_COLOR_CYAN);
+    strcat(formatted, "[DEBUG] ");
     strcat(formatted, fmt);
     strcat(formatted, "\n");
     strcat(formatted, ANSI_COLOR_RESET);

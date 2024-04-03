@@ -2,11 +2,7 @@
 
 ## Accounts
 
-Contains the account data for each user. Each file contains 3 lines:
-
-1. Surname
-2. Name
-3. Password (Hashed)
+Contains the account data for each user. Each file contains the hashed password of the user.
 
 ## Inventory
 
