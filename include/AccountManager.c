@@ -4,16 +4,17 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "Structs.h"
 #include "LogUtils.h"
 
-char *get_filepath(char *surname, char *name, char *datapath)
+char *get_filepath(Account *acc, char *datapath)
 {
     char *prefix = "accounts/";
-    char *filepath = malloc(strlen(surname) + strlen(name) + strlen(prefix) + strlen(datapath));
+    char *filepath = malloc(strlen(acc->surname) + strlen(acc->name) + strlen(prefix) + strlen(datapath));
     strcpy(filepath, datapath);
     strcat(filepath, prefix);
-    strcat(filepath, surname);
-    strcat(filepath, name);
+    strcat(filepath, acc->surname);
+    strcat(filepath, acc->name);
     return filepath;
 }
 
@@ -35,6 +36,7 @@ char *hash_password(char *pass)
 
     SHA256(pass, strlen(pass), hashed_bytes);
 
+    // converting to hex string
     for (int i = 0; i < SHA256_192_DIGEST_LENGTH; i++)
     {
         sprintf(hashed_pass + strlen(hashed_pass), "%02x", hashed_bytes[i]);
@@ -45,10 +47,10 @@ char *hash_password(char *pass)
     return hashed_pass;
 }
 
-char create_account(char *surname, char *name, char *datapath)
+char create_account(Account *acc, char *datapath)
 {
     // check if account already exists
-    char *filepath = get_filepath(surname, name, datapath);
+    char *filepath = get_filepath(acc, datapath);
     if (fopen(filepath, "r") != NULL)
     {
         print_error("Account already exists.");
@@ -82,10 +84,10 @@ char create_account(char *surname, char *name, char *datapath)
     return 0;
 }
 
-char login(char *surname, char *name, char *datapath)
+char login(Account *acc, char *datapath)
 {
     // open account file
-    char *filepath = get_filepath(surname, name, datapath);
+    char *filepath = get_filepath(acc, datapath);
     FILE *account_file = fopen(filepath, "r");
     free(filepath);
 
