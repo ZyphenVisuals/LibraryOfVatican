@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "include/Structs.h"
 #include "include/LogUtils.h"
 #include "include/AccountManager.h"
+#include "include/App.h"
 
 char *get_datapath(char *command)
 {
@@ -51,6 +53,10 @@ int main(int argc, char **argv)
     }
 
     print_info("Login success! Welcome %s %s.", acc.surname, acc.name);
+
+    sleep(1);
+
+    run_app(&acc, datapath);
 
     return 0;
 }
