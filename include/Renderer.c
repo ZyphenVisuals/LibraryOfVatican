@@ -51,3 +51,55 @@ void render_footer(const char *fmt, ...)
     refresh();
     return;
 }
+
+/**
+ * @brief Transforms an array of strings into an array of menu items
+ *
+ * @param count Length of the original array
+ * @param choices Original array of strings
+ * @return ITEM** New array of menu items
+ */
+ITEM **items_from_strings(unsigned int count, char *choices[])
+{
+    ITEM **items;
+
+    items = (ITEM **)calloc(count + 1, sizeof(ITEM *));
+
+    for (int i = 0; i < count; ++i)
+        items[i] = new_item(choices[i], choices[i]);
+    items[count] = (ITEM *)NULL;
+
+    return items;
+}
+
+/**
+ * @brief Renders a simple, single choice menu on the screen with the given choices
+ *
+ * @param count Amount of items in array
+ * @param choices Array of strings representing the choices
+ * @return int The index of the selected choice
+ */
+int render_menu(unsigned int count, char *choices[])
+{
+    ITEM **items = items_from_strings(count, choices);
+
+    MENU *menu = new_menu(items);    /* Initialize menu*/
+    menu_opts_off(menu, O_SHOWDESC); /* Disable descriptions*/
+
+    post_menu(menu);
+    refresh();
+
+    int c;
+    while (c = getch())
+    {
+        switch (c)
+        {
+        case KEY_DOWN:
+            menu_driver(menu, REQ_DOWN_ITEM);
+            break;
+        case KEY_UP:
+            menu_driver(menu, REQ_UP_ITEM);
+            break;
+        }
+    }
+}
