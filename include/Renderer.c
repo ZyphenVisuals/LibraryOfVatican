@@ -3,24 +3,17 @@
 #include <signal.h>
 #include <stdlib.h>
 
-/**
- * @brief Gracefully shuts down ncurses
- *
- * @param sig
- */
-void finish(int sig)
+#include "Renderer.h"
+
+void stop_app(int sig)
 {
     endwin();
     exit(0);
 }
 
-/**
- * @brief Initializes ncurses
- *
- */
 void setup_screen()
 {
-    signal(SIGINT, finish); /* arrange interrupts to terminate */
+    signal(SIGINT, stop_app); /* arrange interrupts to terminate */
 
     initscr();            /* initialize the curses library */
     keypad(stdscr, TRUE); /* enable keyboard mapping */
@@ -34,12 +27,6 @@ void setup_screen()
     return;
 }
 
-/**
- * @brief Changes the current footer using a format string
- *
- * @param fmt Format
- * @param ... Variables used in fmt
- */
 void render_footer(const char *fmt, ...)
 {
     char *footer = malloc(64);
@@ -52,13 +39,6 @@ void render_footer(const char *fmt, ...)
     return;
 }
 
-/**
- * @brief Transforms an array of strings into an array of menu items
- *
- * @param count Length of the original array
- * @param choices Original array of strings
- * @return ITEM** New array of menu items
- */
 ITEM **items_from_strings(unsigned int count, char *choices[])
 {
     ITEM **items;
@@ -72,13 +52,6 @@ ITEM **items_from_strings(unsigned int count, char *choices[])
     return items;
 }
 
-/**
- * @brief Renders a simple, single choice menu on the screen with the given choices
- *
- * @param count Amount of items in array
- * @param choices Array of strings representing the choices
- * @return int The index of the selected choice
- */
 int render_menu(unsigned int count, char *choices[])
 {
     ITEM **items = items_from_strings(count, choices);

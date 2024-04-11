@@ -1,6 +1,7 @@
 #include "Structs.h"
 #include "Renderer.h"
 #include "LogUtils.h"
+#include "App.h"
 
 #include <unistd.h>
 

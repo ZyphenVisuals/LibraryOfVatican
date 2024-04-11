@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "LogUtils.h"
+
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_YELLOW "\x1b[33m"
@@ -11,12 +13,6 @@
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
-/**
- * @brief Prints to stdout in green, prepending [INFO].
- *
- * @param fmt - Format
- * @param ... - Variables used in fmt
- */
 void print_info(const char *fmt, ...)
 {
     va_list args;
@@ -31,12 +27,6 @@ void print_info(const char *fmt, ...)
     va_end(args);
 }
 
-/**
- * @brief Prints to stdout in cyan, prepending [DEBUG].
- *
- * @param fmt - Format
- * @param ... - Variables used in fmt
- */
 void print_debug(const char *fmt, ...)
 {
     va_list args;
@@ -51,12 +41,6 @@ void print_debug(const char *fmt, ...)
     va_end(args);
 }
 
-/**
- * @brief Prints to stdout in red, prepending [ERRORs].
- *
- * @param fmt - Format
- * @param ... - Variables used in fmt
- */
 void print_error(const char *fmt, ...)
 {
     va_list args;

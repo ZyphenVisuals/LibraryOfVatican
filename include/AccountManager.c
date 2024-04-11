@@ -6,6 +6,7 @@
 
 #include "Structs.h"
 #include "LogUtils.h"
+#include "AccountManager.h"
 
 char *get_filepath(Account *acc, char *datapath)
 {
