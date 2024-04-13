@@ -4,6 +4,8 @@
 #include "App.h"
 
 #include <unistd.h>
+#include <stdio.h>
+#include <ncurses.h>
 
 void run_app(Account *acc, char *datapath)
 {
@@ -16,7 +18,18 @@ void run_app(Account *acc, char *datapath)
         "Donate a book",
         "Quit"};
 
-    render_menu(4, choices);
+    unsigned int selection = render_menu(4, choices);
+
+    switch (selection)
+    {
+    case 3:
+        stop_app(0);
+        break;
+
+    default:
+        break;
+    }
+    stop_app(1);
 
     return;
 }

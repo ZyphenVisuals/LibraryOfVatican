@@ -8,7 +8,7 @@
 void stop_app(int sig)
 {
     endwin();
-    exit(0);
+    exit(sig);
 }
 
 void setup_screen()
@@ -73,6 +73,10 @@ int render_menu(unsigned int count, char *choices[])
         case KEY_UP:
             menu_driver(menu, REQ_UP_ITEM);
             break;
+        case 'c':
+            unpost_menu(menu);
+            refresh();
+            return item_index(current_item(menu));
         }
     }
 }
