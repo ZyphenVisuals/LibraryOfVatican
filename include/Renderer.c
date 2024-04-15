@@ -34,7 +34,7 @@ void render_footer(const char *fmt, ...)
     va_start(args, fmt);
     vsprintf(footer, fmt, args);
     va_end(args);
-    mvprintw(LINES - 2, 0, footer);
+    mvprintw(LINES - 2, 2, footer);
     refresh();
     return;
 }
@@ -73,7 +73,7 @@ int render_menu(unsigned int count, char *choices[])
         case KEY_UP:
             menu_driver(menu, REQ_UP_ITEM);
             break;
-        case 'c':
+        case 10: // newline, enter doesn't work
             unpost_menu(menu);
             refresh();
             return item_index(current_item(menu));

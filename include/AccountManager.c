@@ -38,7 +38,7 @@ char *hash_password(char *pass)
     SHA256(pass, strlen(pass), hashed_bytes);
 
     // converting to hex string
-    for (int i = 0; i < SHA256_192_DIGEST_LENGTH; i++)
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
     {
         sprintf(hashed_pass + strlen(hashed_pass), "%02x", hashed_bytes[i]);
     }
@@ -101,7 +101,7 @@ char login(Account *acc, char *datapath)
 
     // read hash from file
     char *target_hash = malloc(SHA256_DIGEST_LENGTH * 2 + 1);
-    fgets(target_hash, SHA256_DIGEST_LENGTH * 2, account_file);
+    fgets(target_hash, SHA256_DIGEST_LENGTH * 2 + 1, account_file);
 
     // read password from usr
     char *pass = read_password("Password: ");

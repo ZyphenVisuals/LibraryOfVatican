@@ -18,18 +18,13 @@ void run_app(Account *acc, char *datapath)
         "Donate a book",
         "Quit"};
 
-    unsigned int selection = render_menu(4, choices);
-
-    switch (selection)
+    unsigned int selection;
+    while ((selection = render_menu(4, choices)) != 3)
     {
-    case 3:
-        stop_app(0);
-        break;
-
-    default:
-        break;
+        //
     }
-    stop_app(1);
+
+    stop_app(0);
 
     return;
 }
