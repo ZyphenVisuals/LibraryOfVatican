@@ -33,6 +33,27 @@ char donate_book(Book book, char *datapath)
     return 0;
 }
 
+char match_books(Book search, Book book)
+{
+    if (strlen(search.author) != 0 && strstr(book.author, search.author) == NULL)
+    {
+        return 0;
+    }
+    if (strlen(search.title) != 0 && strstr(book.title, search.title) == NULL)
+    {
+        return 0;
+    }
+    if (strlen(search.publisher) != 0 && strstr(book.publisher, search.publisher) == NULL)
+    {
+        return 0;
+    }
+    if (strlen(search.year) != 0 && strstr(book.year, search.year) == NULL)
+    {
+        return 0;
+    }
+    return 1;
+}
+
 unsigned int search_books(Book search, char *searchPath, Book *books)
 {
     DIR *d;
@@ -54,6 +75,10 @@ unsigned int search_books(Book search, char *searchPath, Book *books)
                 free(filePath);
                 free(quantity);
                 fclose(f);
+                if (match_books(search, book))
+                {
+                    puts(book.title);
+                }
             }
         }
         closedir(d);

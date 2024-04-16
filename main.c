@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
     print_info("Login success! Welcome %s %s.", acc.surname, acc.name);
 
-    sleep(1);
+    // sleep(1);
 
     run_app(&acc, datapath);
 
