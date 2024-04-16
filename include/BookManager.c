@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <dirent.h>
 
 #include "Structs.h"
 
@@ -29,5 +30,33 @@ char donate_book(Book book, char *datapath)
     fprintf(f, "1");
     fclose(f);
     free(filepath);
+    return 0;
+}
+
+unsigned int search_books(Book search, char *searchPath, Book *books)
+{
+    DIR *d;
+    struct dirent *dir;
+    d = opendir(searchPath);
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            if (dir->d_name[0] != '.')
+            {
+                char *filePath = malloc(strlen(searchPath) + strlen(dir->d_name) + 1);
+                strcpy(filePath, searchPath);
+                strcat(filePath, dir->d_name);
+                char *quantity = malloc(10);
+                FILE *f = fopen(filePath, "r");
+                fscanf(f, "%s", quantity);
+                Book book = book_deserialize(dir->d_name, quantity);
+                free(filePath);
+                free(quantity);
+                fclose(f);
+            }
+        }
+        closedir(d);
+    }
     return 0;
 }

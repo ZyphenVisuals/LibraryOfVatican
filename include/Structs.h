@@ -22,4 +22,6 @@ Book book_constructor(char *title, char *author, char *publisher, char *year, ch
 
 char *book_serialize(Book book);
 
+Book book_deserialize(char *serial, char *quantity);
+
 #endif

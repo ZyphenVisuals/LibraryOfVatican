@@ -67,3 +67,28 @@ char *book_serialize(Book book)
     sprintf(serial, "(%s),(%s),(%s),(%s)", book.title, book.author, book.publisher, book.year);
     return serial;
 }
+
+Book book_deserialize(char *serial, char *quantity)
+{
+    /* Big strings used as buffers */
+    char *title = malloc(strlen(serial));
+    char *author = malloc(strlen(serial));
+    char *publisher = malloc(strlen(serial));
+    char *year = malloc(strlen(serial));
+
+    title = strtok(serial, ",");
+    title[strlen(title) - 1] = 0;
+    title++;
+    author = strtok(NULL, ",");
+    author[strlen(author) - 1] = 0;
+    author++;
+    publisher = strtok(NULL, ",");
+    publisher[strlen(publisher) - 1] = 0;
+    publisher++;
+    year = strtok(NULL, ",");
+    year[strlen(year) - 1] = 0;
+    year++;
+
+    Book b = book_constructor(title, author, publisher, year, quantity);
+    return b;
+}
