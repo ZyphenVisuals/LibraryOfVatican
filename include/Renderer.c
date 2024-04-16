@@ -215,8 +215,8 @@ char **render_form(unsigned int count, char **fields, char *title)
             form_driver(form, REQ_VALIDATION);
             for (int i = 0; i < count; i++)
             {
-
-                res[i] = field_buffer(field[i], 0);
+                res[i] = malloc(strlen(field_buffer(field[i], 0)) + 1);
+                strcpy(res[i], field_buffer(field[i], 0));
                 free_field(field[i]);
             }
             unpost_form(form);

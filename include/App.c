@@ -2,10 +2,10 @@
 #include "Renderer.h"
 #include "LogUtils.h"
 #include "App.h"
+#include "BookManager.h"
 
 #include <unistd.h>
 #include <stdio.h>
-#include <ncurses.h>
 
 void run_app(Account *acc, char *datapath)
 {
@@ -29,7 +29,7 @@ void run_app(Account *acc, char *datapath)
                 "Publisher",
                 "Year"};
             char **book_data = render_form(4, labels, "Donate book");
-            puts(book_data[0]);
+            donate_book(book_data[0], book_data[1], book_data[2], book_data[3], datapath);
         }
     }
 
