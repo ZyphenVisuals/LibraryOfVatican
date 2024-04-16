@@ -24,4 +24,6 @@ char *book_serialize(Book book);
 
 Book book_deserialize(char *serial, char *quantity);
 
+char book_filled(Book book);
+
 #endif

@@ -31,7 +31,7 @@ void run_app(Account *acc, char *datapath)
                 "Author",
                 "Publisher",
                 "Year"};
-            char **book_data = render_form(4, labels, "Donate book");
+            char **book_data = render_form(4, labels, "Search books");
             if (book_data != NULL)
             {
                 Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
@@ -59,7 +59,15 @@ void run_app(Account *acc, char *datapath)
             if (book_data != NULL)
             {
                 Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
-                donate_book(book, datapath);
+                if (book_filled(book))
+                {
+                    donate_book(book, datapath);
+                    render_alert("Success", "Thank you for your donation!");
+                }
+                else
+                {
+                    render_alert("Error", "Please fill in all fields.");
+                }
             }
         }
     }

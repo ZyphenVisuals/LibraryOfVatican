@@ -92,3 +92,16 @@ Book book_deserialize(char *serial, char *quantity)
     Book b = book_constructor(title, author, publisher, year, quantity);
     return b;
 }
+
+char book_filled(Book book)
+{
+    if (strlen(book.author) == 0 ||
+        strlen(book.publisher) == 0 ||
+        strlen(book.quantity) == 0 ||
+        strlen(book.title) == 0 ||
+        strlen(book.year) == 0)
+    {
+        return 0;
+    }
+    return 1;
+}
