@@ -28,7 +28,8 @@ void run_app(Account *acc, char *datapath)
                 "Author",
                 "Publisher",
                 "Year"};
-            render_form(4, labels, "Donate book");
+            char **book_data = render_form(4, labels, "Donate book");
+            puts(book_data[0]);
         }
     }
 

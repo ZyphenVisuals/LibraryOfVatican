@@ -150,11 +150,8 @@ int render_menu(unsigned int count, char **choices, char *title)
 char **render_form(unsigned int count, char **fields, char *title)
 {
     int max_el_length = get_max_length(count, fields);
-    if (strlen(title) > max_el_length)
-    {
-        max_el_length = strlen(title);
-    }
 
+    char **res = malloc(count * sizeof(char *));
     FIELD **field = malloc(count * sizeof(FIELD *));
     FORM *form;
     WINDOW *window;
@@ -190,7 +187,7 @@ char **render_form(unsigned int count, char **fields, char *title)
     {
         mvwprintw(window, 4 + i * 2, 2, fields[i]);
     }
-    /* code */
+
     post_form(form);
     wrefresh(window);
 
@@ -204,14 +201,10 @@ char **render_form(unsigned int count, char **fields, char *title)
         switch (ch)
         {
         case KEY_DOWN:
-            /* Go to next field */
             form_driver(form, REQ_NEXT_FIELD);
-            /* Go to the end of the present buffer */
-            /* Leaves nicely at the last character */
             form_driver(form, REQ_END_LINE);
             break;
         case KEY_UP:
-            /* Go to previous field */
             form_driver(form, REQ_PREV_FIELD);
             form_driver(form, REQ_END_LINE);
             break;
@@ -219,10 +212,18 @@ char **render_form(unsigned int count, char **fields, char *title)
             form_driver(form, REQ_DEL_PREV);
             break;
         case 10: // newline, enter doesn't work
+            form_driver(form, REQ_VALIDATION);
+            for (int i = 0; i < count; i++)
+            {
+
+                res[i] = field_buffer(field[i], 0);
+                free_field(field[i]);
+            }
             unpost_form(form);
+            free_form(form);
             clear();
             refresh();
-            return NULL;
+            return res;
         default:
             /* If this is a normal character, it gets */
             /* Printed				  */
