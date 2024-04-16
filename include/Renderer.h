@@ -37,6 +37,14 @@ int render_menu(unsigned int count, char **choices, char *title);
 char **render_form(unsigned int count, char **fields, char *title);
 
 /**
+ * @brief Renders a simple alert to the screen
+ *
+ * @param title
+ * @param message
+ */
+void render_alert(char *title, char *message);
+
+/**
  * @brief Gracefully shuts down the app
  *
  * @param sig

@@ -12,7 +12,6 @@
 void run_app(Account *acc, char *datapath)
 {
     setup_screen();
-    render_footer("Hello, %s %s!", acc->surname, acc->name);
 
     char *choices[] = {
         "Search books",
@@ -33,14 +32,21 @@ void run_app(Account *acc, char *datapath)
                 "Publisher",
                 "Year"};
             char **book_data = render_form(4, labels, "Donate book");
-            Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
+            if (book_data != NULL)
+            {
+                Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
 
-            char *folder = "inventory/";
-            char *path = malloc(strlen(datapath) + strlen(folder) + 1);
-            strcpy(path, datapath);
-            strcat(path, folder);
+                char *folder = "inventory/";
+                char *path = malloc(strlen(datapath) + strlen(folder) + 1);
+                strcpy(path, datapath);
+                strcat(path, folder);
 
-            unsigned int books_count = search_books(book, path, books);
+                unsigned int books_count = search_books(book, path, books);
+            }
+        }
+        if (selection == 1)
+        {
+            render_alert("Alert", "Womp womp");
         }
         if (selection == 2)
         {
@@ -50,8 +56,11 @@ void run_app(Account *acc, char *datapath)
                 "Publisher",
                 "Year"};
             char **book_data = render_form(4, labels, "Donate book");
-            Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
-            donate_book(book, datapath);
+            if (book_data != NULL)
+            {
+                Book book = book_constructor(book_data[0], book_data[1], book_data[2], book_data[3], book_data[3]);
+                donate_book(book, datapath);
+            }
         }
     }
 

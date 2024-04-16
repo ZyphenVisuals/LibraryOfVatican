@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include <unistd.h>
 
@@ -23,6 +24,7 @@ void setup_screen()
     keypad(stdscr, TRUE); /* enable keyboard mapping */
     cbreak();             /* take input chars one at a time, no wait for \n */
     noecho();             /* don't echo input */
+    curs_set(0);
 
     start_color();                        /* Enable color */
     init_pair(1, COLOR_RED, COLOR_BLACK); /* Select colors */
@@ -125,6 +127,9 @@ int render_menu(unsigned int count, char **choices, char *title)
     mvwaddch(window, 2, max_el_length + 4, ACS_RTEE);
 
     post_menu(menu);
+
+    render_footer("ENTER to select.");
+
     refresh();
 
     int c;
@@ -149,6 +154,8 @@ int render_menu(unsigned int count, char **choices, char *title)
 
 char **render_form(unsigned int count, char **fields, char *title)
 {
+    curs_set(1);
+
     int max_el_length = get_max_length(count, fields);
 
     char **res = malloc(count * sizeof(char *));
@@ -191,6 +198,8 @@ char **render_form(unsigned int count, char **fields, char *title)
     post_form(form);
     wrefresh(window);
 
+    render_footer("ENTER to submit. F2 to go back.");
+
     refresh();
 
     form_driver(form, REQ_FIRST_FIELD);
@@ -222,18 +231,63 @@ char **render_form(unsigned int count, char **fields, char *title)
             unpost_form(form);
             free_form(form);
             clear();
+            curs_set(0);
             refresh();
             return res;
+        case KEY_F(2):
+            unpost_form(form);
+            free_form(form);
+            clear();
+            curs_set(0);
+            refresh();
+            return NULL;
         default:
             /* If this is a normal character, it gets */
             /* Printed				  */
-            form_driver(form, ch);
+            if (ch == (char)ch)
+                form_driver(form, ch);
             break;
         }
     }
 
     /* Un post form and free the memory */
     unpost_form(form);
-
+    curs_set(0);
     return NULL;
+}
+
+void render_alert(char *title, char *message)
+{
+    unsigned int max_length = strlen(message);
+    if (strlen(title) > max_length)
+        max_length = strlen(title);
+
+    WINDOW *window = newwin(5, max_length + 4, 4, 4);
+    keypad(window, TRUE);
+
+    box(window, 0, 0);
+    print_in_middle(window, 1, 0, max_length + 4, title, COLOR_PAIR(1));
+    mvwaddch(window, 2, 0, ACS_LTEE);
+    mvwhline(window, 2, 1, ACS_HLINE, 38);
+    mvwaddch(window, 2, max_length + 3, ACS_RTEE);
+
+    mvwprintw(window, 3, 2, "%s", message);
+
+    render_footer("ENTER to continue.");
+
+    refresh();
+
+    int c;
+    while (c = wgetch(window))
+    {
+        switch (c)
+        {
+        case 10: // newline, enter doesn't work
+            clear();
+            refresh();
+            return;
+        }
+    }
+
+    return;
 }
