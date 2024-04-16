@@ -160,7 +160,7 @@ char **render_form(unsigned int count, char **fields, char *title)
     /* Initialize the fields */
     for (int i = 0; i < count; i++)
     {
-        field[i] = new_field(1, 30, 2 + i * 2, 1, 0, 0);
+        field[i] = new_field(1, 50, 2 + i * 2, 1, 0, 0);
         set_field_back(field[i], A_UNDERLINE);
     }
 
