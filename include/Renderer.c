@@ -106,7 +106,7 @@ int render_menu(unsigned int count, char **choices, char *title)
 
     ITEM **items = items_from_strings(count, choices);
 
-    WINDOW *window = newwin(4 + count, max_el_length + 5, 4, 4);
+    WINDOW *window = newwin(4 + count, max_el_length + 5, (LINES / 2) - (count / 2) - 2, (COLS / 2) - (max_el_length / 2) - 2);
     keypad(window, TRUE);
 
     MENU *menu = new_menu(items);    /* Initialize menu*/
@@ -178,7 +178,8 @@ char **render_form(unsigned int count, char **fields, char *title)
     scale_form(form, &rows, &cols);
 
     /* Create the window to be associated with the form */
-    window = newwin(rows + 4, cols + 4 + max_el_length, 4, 4);
+    /* Bonus: auto centering */
+    window = newwin(rows + 4, cols + 4 + max_el_length, (LINES / 2) - (rows / 2) - 2, (COLS / 2) - (cols / 2) - (max_el_length / 2) - 2);
     keypad(window, TRUE);
 
     /* Set main window and sub window */
@@ -262,7 +263,8 @@ void render_alert(char *title, char *message)
     if (strlen(title) > max_length)
         max_length = strlen(title);
 
-    WINDOW *window = newwin(5, max_length + 4, 4, 4);
+    // auto fit and auto center
+    WINDOW *window = newwin(5, max_length + 4, (LINES / 2) - 3, (COLS / 2) - (max_length / 2) - 2);
     keypad(window, TRUE);
 
     box(window, 0, 0);
