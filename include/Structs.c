@@ -105,3 +105,10 @@ char book_filled(Book book)
     }
     return 1;
 }
+
+char *book_pretty(Book book)
+{
+    char *text = malloc(10 + strlen(book.quantity) + strlen(book.title) + strlen(book.author) + strlen(book.publisher) + strlen(book.year));
+    sprintf(text, "%sx %s (%s, %s, %s)", book.quantity, book.title, book.author, book.publisher, book.year);
+    return text;
+}

@@ -24,8 +24,6 @@ void run_app(Account *acc, char *datapath)
     {
         if (selection == 0)
         {
-            Book *books;
-
             char *labels[] = {
                 "Title",
                 "Author",
@@ -41,7 +39,17 @@ void run_app(Account *acc, char *datapath)
                 strcpy(path, datapath);
                 strcat(path, folder);
 
-                unsigned int books_count = search_books(book, path, books);
+                unsigned int books_count;
+                Book *books = search_books(book, path, &books_count);
+
+                char **choices = malloc((books_count + 1) * sizeof(char *));
+                choices[0] = "Back";
+                for (int i = 0; i < books_count; i++)
+                {
+                    choices[i + 1] = book_pretty(books[i]);
+                }
+
+                unsigned int choice = render_menu(books_count, choices, "Available books");
             }
         }
         if (selection == 1)

@@ -123,7 +123,7 @@ int render_menu(unsigned int count, char **choices, char *title)
     box(window, 0, 0);
     print_in_middle(window, 1, 0, max_el_length + 5, title, COLOR_PAIR(1));
     mvwaddch(window, 2, 0, ACS_LTEE);
-    mvwhline(window, 2, 1, ACS_HLINE, 38);
+    mvwhline(window, 2, 1, ACS_HLINE, max_el_length + 3);
     mvwaddch(window, 2, max_el_length + 4, ACS_RTEE);
 
     post_menu(menu);

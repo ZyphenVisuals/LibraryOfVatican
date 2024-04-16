@@ -17,9 +17,9 @@ char donate_book(Book book, char *datapath);
  *
  * @param search Book object to filter. Quantity is ignored.
  * @param datapath Path to search
- * @param books Array of strings where to add the results
- * @return unsigned int - Number of books returned
+ * @param books_count Number of books (will be set by function)
+ * @return Book* - Array of books
  */
-unsigned int search_books(Book search, char *datapath, Book *books);
+Book *search_books(Book search, char *datapath, unsigned int *books_count);
 
 #endif

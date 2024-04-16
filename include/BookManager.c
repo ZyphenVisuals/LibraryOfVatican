@@ -54,13 +54,28 @@ char match_books(Book search, Book book)
     return 1;
 }
 
-unsigned int search_books(Book search, char *searchPath, Book *books)
+Book *search_books(Book search, char *searchPath, unsigned int *books_count)
 {
     DIR *d;
     struct dirent *dir;
     d = opendir(searchPath);
+    *books_count = 0;
+    Book *books;
     if (d)
     {
+        /* quick look, get max amount of files */
+        while ((dir = readdir(d)) != NULL)
+        {
+            if (dir->d_name[0] != '.')
+            {
+                (*books_count)++;
+            }
+        }
+
+        books = malloc(*books_count * sizeof(Book)); /* initialize memory for book array*/
+        *books_count = 0;                            /* reset fileCount for an accurate count*/
+        rewinddir(d);                                /* rewind directory for second pass*/
+
         while ((dir = readdir(d)) != NULL)
         {
             if (dir->d_name[0] != '.')
@@ -77,11 +92,12 @@ unsigned int search_books(Book search, char *searchPath, Book *books)
                 fclose(f);
                 if (match_books(search, book))
                 {
-                    puts(book.title);
+                    books[*books_count] = book_constructor(book.title, book.author, book.publisher, book.year, book.quantity);
+                    (*books_count)++;
                 }
             }
         }
         closedir(d);
     }
-    return 0;
+    return books;
 }
