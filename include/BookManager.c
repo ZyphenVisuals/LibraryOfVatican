@@ -101,3 +101,57 @@ Book *search_books(Book search, char *searchPath, unsigned int *books_count)
     }
     return books;
 }
+
+char transfer_book(Book book, char *sourcePath, char *targetPath)
+{
+    char *bookSerial = book_serialize(book);
+    char *sourceFile = malloc(strlen(sourcePath) + strlen(bookSerial) + 1);
+    FILE *source = fopen(sourceFile, "r");
+    if (source == NULL)
+    {
+        return 1;
+    }
+    unsigned int sourceCount;
+    fscanf(source, "%u", &sourceCount);
+    fclose(source);
+    if (sourceCount > 1)
+    {
+        source = fopen(sourceFile, "w");
+        fprintf(source, "%d", sourceCount - 1);
+        fclose(source);
+    }
+    else
+    {
+        remove(sourceFile);
+    }
+
+    char *targetFile = malloc(strlen(targetPath) + strlen(bookSerial) + 1);
+    FILE *target = fopen(targetFile, "r");
+    if (target == NULL)
+    {
+        target = fopen(targetFile, "w");
+        fprintf(target, "1");
+        fclose(target);
+        return 0;
+    }
+    unsigned int targetCount;
+    fscanf(target, "%u", &targetCount);
+    fclose(target);
+    target = fopen(targetFile, "w");
+    fprintf(target, "%u", targetCount);
+    fclose(target);
+    return 0;
+}
+
+char borrow_book(Book book, Account *acc, char *datapath)
+{
+    char *inventoryFolder = "inventory/";
+    char *inventoryPath = malloc(strlen(datapath) + strlen(inventoryFolder) + 1);
+    sprintf(inventoryPath, "%s%s", datapath, inventoryFolder);
+    char *loansFolder = "loans/";
+    char *userFolder = malloc(strlen(acc->surname) + strlen(acc->name) + 2);
+    sprintf(userFolder, "%s%s/", acc->surname, acc->name);
+    char *userPath = malloc(strlen(datapath) + strlen(loansFolder) + strlen(userFolder) + 1);
+    sprintf(userPath, "%s%s%s", datapath, loansFolder, userFolder);
+    return transfer_book(book, inventoryPath, userPath);
+}

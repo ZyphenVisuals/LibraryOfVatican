@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "Structs.h"
 #include "LogUtils.h"
@@ -81,6 +82,12 @@ char create_account(Account *acc, char *datapath)
     fprintf(account_file, "%s", hashed_pass);
     fclose(account_file);
     free(hashed_pass);
+
+    // create account
+    char *folder = "loans/";
+    char *folderPath = malloc(strlen(datapath) + strlen(folder) + strlen(acc->surname) + strlen(acc->name) + 2);
+    sprintf(folderPath, "%s%s%s%s/", datapath, folder, acc->surname, acc->name);
+    mkdir(folderPath, 0777);
 
     return 0;
 }

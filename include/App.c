@@ -14,9 +14,9 @@ void run_app(Account *acc, char *datapath)
     setup_screen();
 
     char *choices[] = {
-        "Search books",
+        "Borrow books",
         "Return books",
-        "Donate a book",
+        "Donate books",
         "Quit"};
 
     unsigned int selection;
@@ -49,7 +49,13 @@ void run_app(Account *acc, char *datapath)
                     choices[i + 1] = book_pretty(books[i]);
                 }
 
-                unsigned int choice = render_menu(books_count, choices, "Available books");
+                unsigned int choice = render_menu(books_count + 1, choices, "Available books");
+                if (choice != 0)
+                {
+                    choice--;
+
+                    borrow_book(books[choice], acc, datapath);
+                }
             }
         }
         if (selection == 1)

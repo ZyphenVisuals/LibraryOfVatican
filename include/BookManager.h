@@ -22,4 +22,14 @@ char donate_book(Book book, char *datapath);
  */
 Book *search_books(Book search, char *datapath, unsigned int *books_count);
 
+/**
+ * @brief Transfers book from inventory to user account.
+ *
+ * @param book Book to borrow
+ * @param acc Current user account
+ * @param datapath Persistent data storage
+ * @return char - 0 if succesful, 1 otherwise
+ */
+char borrow_book(Book book, Account *acc, char *datapath);
+
 #endif
