@@ -32,4 +32,14 @@ Book *search_books(Book search, char *datapath, unsigned int *books_count);
  */
 char borrow_book(Book book, Account *acc, char *datapath);
 
+/**
+ * @brief Transfers book from user account to inventory.
+ *
+ * @param book Book to return
+ * @param acc Current user account
+ * @param datapath Persistent data storage
+ * @return char - 0 if succesful, 1 otherwise
+ */
+char return_book(Book book, Account *acc, char *datapath);
+
 #endif

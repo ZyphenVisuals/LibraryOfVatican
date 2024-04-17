@@ -67,7 +67,37 @@ void run_app(Account *acc, char *datapath)
         }
         if (selection == 1)
         {
-            render_alert("Alert", "Womp womp");
+            // empty book, no filtering on borrowed books
+            Book book = book_constructor("", "", "", "", "");
+
+            char *folder = "loans/";
+            char *path = malloc(strlen(datapath) + strlen(folder) + strlen(acc->surname) + strlen(acc->name) + 2);
+            sprintf(path, "%s%s%s%s/", datapath, folder, acc->surname, acc->name);
+
+            unsigned int books_count;
+            Book *books = search_books(book, path, &books_count);
+
+            char **choices = malloc((books_count + 1) * sizeof(char *));
+            choices[0] = "Back";
+            for (int i = 0; i < books_count; i++)
+            {
+                choices[i + 1] = book_pretty(books[i]);
+            }
+
+            unsigned int choice = render_menu(books_count + 1, choices, "Borrowed books");
+            if (choice != 0)
+            {
+                choice--;
+
+                if (return_book(books[choice], acc, datapath))
+                {
+                    render_alert("Error", "An error has occured.");
+                }
+                else
+                {
+                    render_alert("Success", "Book has been returned. Thank you!");
+                }
+            }
         }
         if (selection == 2)
         {

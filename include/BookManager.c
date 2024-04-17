@@ -157,3 +157,16 @@ char borrow_book(Book book, Account *acc, char *datapath)
     sprintf(userPath, "%s%s%s", datapath, loansFolder, userFolder);
     return transfer_book(book, inventoryPath, userPath);
 }
+
+char return_book(Book book, Account *acc, char *datapath)
+{
+    char *inventoryFolder = "inventory/";
+    char *inventoryPath = malloc(strlen(datapath) + strlen(inventoryFolder) + 1);
+    sprintf(inventoryPath, "%s%s", datapath, inventoryFolder);
+    char *loansFolder = "loans/";
+    char *userFolder = malloc(strlen(acc->surname) + strlen(acc->name) + 2);
+    sprintf(userFolder, "%s%s/", acc->surname, acc->name);
+    char *userPath = malloc(strlen(datapath) + strlen(loansFolder) + strlen(userFolder) + 1);
+    sprintf(userPath, "%s%s%s", datapath, loansFolder, userFolder);
+    return transfer_book(book, userPath, inventoryPath);
+}
