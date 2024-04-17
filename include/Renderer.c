@@ -159,7 +159,7 @@ char **render_form(unsigned int count, char **fields, char *title)
     int max_el_length = get_max_length(count, fields);
 
     char **res = malloc(count * sizeof(char *));
-    FIELD **field = malloc(count * sizeof(FIELD *));
+    FIELD **field = malloc((count + 1) * sizeof(FIELD *));
     FORM *form;
     WINDOW *window;
     int ch, rows, cols;
@@ -170,6 +170,7 @@ char **render_form(unsigned int count, char **fields, char *title)
         field[i] = new_field(1, 50, 2 + i * 2, 1, 0, 0);
         set_field_back(field[i], A_UNDERLINE);
     }
+    field[count] = NULL; // fields must be null terminated. see man page
 
     /* Create the form and post it */
     form = new_form(field);
@@ -206,7 +207,7 @@ char **render_form(unsigned int count, char **fields, char *title)
     form_driver(form, REQ_FIRST_FIELD);
 
     /* Loop through to get user requests */
-    while ((ch = wgetch(window)) != KEY_F(1))
+    while ((ch = wgetch(window)))
     {
         switch (ch)
         {
@@ -250,11 +251,6 @@ char **render_form(unsigned int count, char **fields, char *title)
             break;
         }
     }
-
-    /* Un post form and free the memory */
-    unpost_form(form);
-    curs_set(0);
-    return NULL;
 }
 
 void render_alert(char *title, char *message)
