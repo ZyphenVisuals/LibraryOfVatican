@@ -106,6 +106,7 @@ char transfer_book(Book book, char *sourcePath, char *targetPath)
 {
     char *bookSerial = book_serialize(book);
     char *sourceFile = malloc(strlen(sourcePath) + strlen(bookSerial) + 1);
+    sprintf(sourceFile, "%s%s", sourcePath, bookSerial);
     FILE *source = fopen(sourceFile, "r");
     if (source == NULL)
     {
@@ -126,6 +127,7 @@ char transfer_book(Book book, char *sourcePath, char *targetPath)
     }
 
     char *targetFile = malloc(strlen(targetPath) + strlen(bookSerial) + 1);
+    sprintf(targetFile, "%s%s", targetPath, bookSerial);
     FILE *target = fopen(targetFile, "r");
     if (target == NULL)
     {
@@ -138,7 +140,7 @@ char transfer_book(Book book, char *sourcePath, char *targetPath)
     fscanf(target, "%u", &targetCount);
     fclose(target);
     target = fopen(targetFile, "w");
-    fprintf(target, "%u", targetCount);
+    fprintf(target, "%u", targetCount + 1);
     fclose(target);
     return 0;
 }

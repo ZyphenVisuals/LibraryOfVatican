@@ -54,7 +54,14 @@ void run_app(Account *acc, char *datapath)
                 {
                     choice--;
 
-                    borrow_book(books[choice], acc, datapath);
+                    if (borrow_book(books[choice], acc, datapath))
+                    {
+                        render_alert("Error", "An error has occured.");
+                    }
+                    else
+                    {
+                        render_alert("Success", "Book added to your account.");
+                    }
                 }
             }
         }
